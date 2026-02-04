@@ -1,6 +1,6 @@
 [project]
 name = "file_concatenator"
-version = "1.0.3"
+version = "1.0.4"
 description = "Convert directory structure and file contents to a single Markdown file"
 readme = "README.md"
 authors = [

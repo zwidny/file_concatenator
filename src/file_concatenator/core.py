@@ -2,11 +2,11 @@
 核心处理逻辑
 """
 
+import fnmatch
 import os
 import re
-import fnmatch
 from datetime import datetime
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 
 class DirectoryToMarkdown:
@@ -229,7 +229,7 @@ class DirectoryToMarkdown:
             depth = 0 if rel_path == "." else len(rel_path.split(os.sep))
 
             # 更新路径栈
-            while current_paths and len(current_paths) >= depth + 1:
+            while current_paths and len(current_paths) >= depth:
                 current_paths.pop()
 
             dir_name = os.path.basename(root) if os.path.basename(root) else root
@@ -283,8 +283,8 @@ class DirectoryToMarkdown:
         try:
             file_size = self._get_file_size(filepath)
             md_file.write(f"**大小**: {file_size}  \n")
-        except:
-            md_file.write(f"**大小**: 未知  \n")
+        except Exception:
+            md_file.write("**大小**: 未知  \n")
 
         md_file.write(f"**类型**: {self._get_file_type_description(file_ext)}\n\n")
 
@@ -445,7 +445,7 @@ class DirectoryToMarkdown:
                     return f"{size:.1f} {unit}"
                 size /= 1024.0
             return f"{size:.1f} TB"
-        except:
+        except Exception:
             return "未知"
 
     def _get_file_type_description(self, ext: str) -> str:
@@ -499,7 +499,7 @@ class DirectoryToMarkdown:
 
     def _write_statistics(self, md_file, stats: dict):
         """写入统计信息"""
-        md_file.write(f"\n\n## 📈 统计信息\n\n")
+        md_file.write("\n\n## 📈 统计信息\n\n")
         md_file.write(f"- **总目录数**: {stats['total_dirs']}\n")
         md_file.write(f"- **总文件数**: {stats['total_files']}\n")
         # md_file.write(f"- **文本文件**: {stats['text_files']}\n")
@@ -515,7 +515,7 @@ class DirectoryToMarkdown:
     def _print_statistics(self, stats: dict, output_file: str):
         """打印统计信息"""
         print(f"\n✅ 完成! 已生成 {output_file}")
-        print(f"📊 统计信息:")
+        print("📊 统计信息:")
         print(f"  - 总目录数: {stats['total_dirs']}")
         print(f"  - 总文件数: {stats['total_files']}")
         print(f"  - 文本文件: {stats['text_files']}")
